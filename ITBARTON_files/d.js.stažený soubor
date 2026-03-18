@@ -1,0 +1,48 @@
+/* global AdsysDisplay, _adsys_id, _adsys_size, top */
+
+if (typeof AdsysDisplay === 'undefined') {
+  var target = 'd.wedosas.net';
+
+  var AdsysDisplay = {
+    run: function() {
+      if (typeof _adsys_id !== "number") {
+        return;
+      }
+
+      if (typeof _adsys_size !== "number") {
+        return;
+      }
+
+      if (typeof _adsys_cid !== "number") {
+        _adsys_cid = 0;
+      }
+
+      tmp = Math.floor(Math.random()*999666)+1;
+
+      // top document URL
+      // refused when inside frame with different domain
+      try {
+        u = top.document.URL;
+      } catch (err) {
+        u = '';
+      }
+
+      try {
+        r = document.referrer;
+      } catch (err) {
+        r = '';
+      }
+
+      // current timestamp
+      if (!Date.now) {
+        // backward compatibility (IE <= 8)
+        Date.now = function() { return new Date().getTime(); };
+      }
+      t = Math.floor(Date.now() / 1000);
+
+      document.write('<s'+'cript src="https://'+target+'/b?b='+_adsys_id+'&amp;s='+_adsys_size+'&amp;c='+_adsys_cid+'&amp;tmp='+tmp+'&amp;t='+t+'&amp;u='+encodeURIComponent(u)+'&amp;r='+encodeURIComponent(r)+'"></s'+'cript>');
+    }
+  };
+}
+
+AdsysDisplay.run();
